@@ -2,95 +2,32 @@
 
 This code is used to determine membrane tension and analyze current responses  from expermnetal data generated via a combined differential interference contrast (DIC) microscopy and pressure-clamp electrophysiology approach. These data can the be used to determine the tension sensitivity of force-gated ion channels.
 
-<div style="text-align: center;">
-    <img title="a title" alt="Alt text" src="github_sigures/final_circular_fit.png" style="width: 700px; height: auto;">
-</div>
-
-
 # Image Analysis
 
-## YOLOv8 training
-- A YOLOv8 object detection model was trained on >1,500 Differential interference contrast microscopy (400x) images whereby the membrane dome was manually selected. The code for this training is provided in this repository as "training_code.py". This model can reliable detect the membrane done with confidence intervals at or greater then 0.7 as show by the training output below:
+The notebook "mem_imaging_image_processing.ipynb" is used to determine the tension present at the membrane for a given negative pressure step stimulus. The majority of the notebook is dedicated to determining the locaiton of the membrane and then performing a circular fit to determine the theoretical radius of the membrane dome inside of the pipette. An image of an exaple circular fit is shown below:
 
 <div style="text-align: center;">
-    <img title="a title" alt="Alt text" src="images/val_batch2_pred.jpg" style="width: 600px; height: auto;">
+    <img title="a title" alt="Alt text" src="github_figures/final_circular_fit.png" style="width: 400px; height: auto;">
 </div>
+ 
+# Electrophysiology Analysis
 
-## Dependencies
-Python 3.8.5 (other verison may work fine but it is not guaranteed)
+The notebook "mem_imaging_ephys.ipynb" is used to determine the pressure/response relationship for a pressure-step protocol. The main importance of this code for determining the tension sensitivity of a channel is to normalize peak current responses elicited during each pressure step. These nromalized values are then used, along with the membrane tension values, to determine tension sensitivity.
 
-## Installing the OGTC
-
-git clone https://github.com/GrandlLab/OGTC.git
-
-Virtual Envuronment: pip install -r requirements.txt
-
-## Other Necessary Software
-
-- **Micro-Manager**: This is an open-source software is used to control the microscope camera (Coolsnap EZ2) and can be downloaded at https://micro-manager.org/Download_Micro-Manager_Latest_Release
-
-- **Arduino IDE**: This is an open-source software is used write and upload scripts to the Teensy 4.1 (code provided in the repository) and can be downloaded at https://www.arduino.cc/en/software
-
-
-# Executing the Program
-
-### Variables and Inputs
-
-- **volts_per_bit**: slope of volts over bits calibration
-
-- **volts_offset**: y-intercept of volts over bits calibration
-
-- **bits_per_volt**: slope of bits over volts calibration
-
-- **bits_offset**: y-intercept of volts over bits calibrationHEKA to teensy
-
-- **command_voltage**: voltage program will begin at (0mmHg and 0V)
-
-- **total_commanded_sweep_time**: total time you want each sweep to last; dictates how much rest will be given from sweep to sweep
-
-- **target_tension_flex**: setting how flexible tension measurements from target tension can be before pressure is changed
-
-- **hist_limits**: manually determining what the upper and lower bound on the pixel historgrams from the microscope images are
-
-- **gaussian_column_num=2**: telling the OGTC program how many columns to skip when performing gaussian fitting
-
-- **file_path**: file path to save images and end CSV
-
-- **image_saving_frequency**: saving an image of the membrane and fit every x frames
-
-
-# Program Output
-- **protocol_data.csv**: a csv file containing all relevant data to the tension step protocol being executed. Descriptions for the data collected are below:
-
-    - **monitor_bits**: bits being recorded by the Teensy 4.1. This value corresponds to the pressure that is present inside the patching pipette and is monitored by the high-speec pressure-clamp (HSPC) 
-
-    - **command_bits**: bits being sent to the Teensy 4.1. This value corresponds to the pressure that is being commanded by the OGTC to the HSPC.
-
-    - **monitor_pressure**: monitor_bits converted to the pressure (mmHg).
-
-    - **target_tension**: tension being commanded for that step in the protocol.
-
-    - **measured_tension**: tension that is present at the membrane.
-
-    - **instant_radius**: calculated radius of the membrane dome for a single image.
-
-    - **avg_radius**: calculated radius of the membrane dome for the five most recent images (not used for tension calculation).
-    
-    - **protocol_phase**: what phase the protocol is in (prepulse, pressure step, post pressure step).
-
-    - **time**: total time the protocol has been running.
-
-    - **sweep_time**: time for each individual tension step.
-
-    - **on_off_heka**: recording if a voltage is being sent to the amplifier (1) or not (0). This is used as a timestamp for later analysis to timelock the start of the tension step to the electrophysiology recording.
-
-    - **mem_fit_time**: times it takes for each individual loop in the OGTC program to occur.
-
-- **fig_plot**: this variable in the code is associated with a JPG of the current DIC image with the membrane location in each pixel column (blue) and the circular fit (red) overlayed. An example image is shown below:
+This code also determine the pressure of half maximal activation (P50) and slope (k) of the pressure/response relationship. The above described analysis for an example patch is shown below:
 
 <div style="text-align: center;">
-    <img title="a title" alt="Alt text" src="images/example_image_output.jpg" style="width: 400px; height: auto;">
+    <img title="a title" alt="Alt text" src="github_figures/p50.png" style="width: 400px; height: auto;">
 </div>
+
+
+
+## Dependencies and required packages
+Python 3.10.4 (other verison may work fine but it is not guaranteed)
+
+git clone https://github.com/msindoni/piezo_tension_sensitivity.git
+
+Virtual Envuronment (for Anaconda): conda env create -f environment.yml
 
 
 # Authors
