@@ -28,7 +28,7 @@ Python 3.10.4 (other verison may work fine but it is not guaranteed)
 
 git clone https://github.com/msindoni/piezo_tension_sensitivity.git
 
-Virtual Envuronment (for Anaconda): conda env create -f environment.yml
+Virtual Environment (for Anaconda): conda env create -f environment.yml
 
 
 # Authors
