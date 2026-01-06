@@ -17,7 +17,8 @@ The notebook "mem_imaging_ephys.ipynb" is used to determine the pressure/respons
 This code also determine the pressure of half maximal activation (P50) and slope (k) of the pressure/response relationship. The above described analysis for an example patch is shown below:
 
 <div style="text-align: center;">
-    <img title="a title" alt="Alt text" src="github_figures/p50.png" style="width: 400px; height: auto;">
+    <img title="a title" alt="Alt text" src="github_figures/P50.png" 
+    style="width: 400px; height: auto;">
 </div>
 
 
